@@ -9,7 +9,11 @@ const uuidv5 = (typeof window !== 'undefined' && window.uuidv5) || require('uuid
 console.log('Starting. Tests take ~1 minute to run ...');
 
 const array = new Array(16);
-const suite = new Benchmark.Suite();
+const suite = new Benchmark.Suite({
+  onError(event) {
+    console.error(event.target.error);
+  },
+});
 
 suite
   .add('uuidv1()', function () {
@@ -34,6 +38,6 @@ suite
     console.log(event.target.toString());
   })
   .on('complete', function () {
-    console.log('Fastest is ' + this.filter('fastest').map('name'));
+    console.log('Fastest is', this.filter('fastest').map('name'));
   })
   .run();
